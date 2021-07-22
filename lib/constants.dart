@@ -23,7 +23,9 @@ const List<BoardingModel> boarding = const [
 ];
 void signOut(BuildContext context) {
   CacheHelper.removeData(key: 'token').then((value) {
-    if (value) Navigator.of(context).pushReplacementNamed(LoginScreen.route);
+    if (value) {
+      //Navigator.of(context).pushReplacementNamed(LoginScreen.route);
+    }
   });
 }
 

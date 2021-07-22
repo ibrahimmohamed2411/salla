@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:salla/components/components.dart';
+import 'package:salla/constants.dart';
 import 'package:salla/network/local/cache_helper.dart';
+import 'package:salla/widgets/default_form_field.dart';
 import 'package:salla/widgets/default_text_button.dart';
 import 'package:salla/screens/register_screen.dart';
 import 'package:salla/screens/shop_screen.dart';
@@ -11,12 +13,13 @@ import 'package:salla/statemanagement/shop_login_state.dart';
 class LoginScreen extends StatelessWidget {
   static const String route = 'login-screen';
   var formKey = GlobalKey<FormState>();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ShopLoginState>(context, listen: false);
-    var emailController = TextEditingController();
-    var passwordController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -46,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(
                       height: 30,
                     ),
-                    customTextFormField(
+                    DefaultFormField(
                       controller: emailController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
@@ -55,22 +58,26 @@ class LoginScreen extends StatelessWidget {
                         if (!value.contains('@') || !value.contains('.com'))
                           return 'Enter valid email';
                       },
-                      label: 'Email Address',
-                      prefixIcon: Icons.email_outlined,
+                      labelText: 'Email Address',
+                      keyboardType: TextInputType.emailAddress,
+                      icon: Icon(
+                        Icons.email_outlined,
+                      ),
                     ),
                     SizedBox(
                       height: 15,
                     ),
-                    customTextFormField(
+                    DefaultFormField(
                       controller: passwordController,
                       validator: (String? value) {
                         if (value!.isEmpty) {
                           return 'Password is to short';
                         }
                       },
-                      label: 'Password',
-                      prefixIcon: Icons.lock_outline,
-                      isObscure: true,
+                      labelText: 'Password',
+                      obscure: true,
+                      icon: Icon(Icons.lock_outline),
+                      keyboardType: TextInputType.text,
                     ),
                     SizedBox(
                       height: 30,
@@ -89,12 +96,15 @@ class LoginScreen extends StatelessWidget {
                                 key: 'token',
                                 value: provider.loginModel!.data!.token!,
                               ).then((value) {
+                                //
+                                token = provider.loginModel!.data!.token;
                                 showToast(
                                     text: provider.loginModel!.message!,
                                     state: ToastState.SUCCESS,
                                     timeInSec: 1);
                                 Navigator.of(context)
                                     .pushReplacementNamed(ShopScreen.route);
+                                clear();
                               });
                             } else {
                               showToast(
@@ -135,23 +145,8 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Widget customTextFormField({
-    required TextEditingController controller,
-    required FormFieldValidator<String> validator,
-    required String label,
-    required IconData prefixIcon,
-    bool isObscure = false,
-  }) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.emailAddress,
-      validator: validator,
-      obscureText: isObscure,
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(prefixIcon),
-        border: OutlineInputBorder(),
-      ),
-    );
+  void clear() {
+    emailController.clear();
+    passwordController.clear();
   }
 }

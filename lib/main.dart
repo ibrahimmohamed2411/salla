@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:salla/network/local/cache_helper.dart';
 import 'package:salla/network/remote/dio_helper.dart';
@@ -39,29 +40,33 @@ class MyApp extends StatelessWidget {
   MyApp({required this.startWidget});
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => ShopLoginState(),
+    return Phoenix(
+      key: Key('p'),
+      child: MultiProvider(
+        key: Key('m'),
+        providers: [
+          ChangeNotifierProvider(
+            create: (ctx) => ShopLoginState(),
+          ),
+          ChangeNotifierProvider(
+            create: (ctx) => ShopState(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Salla',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: ThemeMode.light,
+          home: startWidget,
+          routes: {
+            SearchScreen.route: (ctx) => SearchScreen(),
+            OnBoardingScreen.route: (ctx) => OnBoardingScreen(),
+            LoginScreen.route: (ctx) => LoginScreen(),
+            RegisterScreen.route: (ctx) => RegisterScreen(),
+            ShopScreen.route: (ctx) => ShopScreen(),
+          },
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => ShopState(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Salla',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: ThemeMode.light,
-        home: startWidget,
-        routes: {
-          SearchScreen.route: (ctx) => SearchScreen(),
-          OnBoardingScreen.route: (ctx) => OnBoardingScreen(),
-          LoginScreen.route: (ctx) => LoginScreen(),
-          RegisterScreen.route: (ctx) => RegisterScreen(),
-          ShopScreen.route: (ctx) => ShopScreen(),
-        },
       ),
     );
   }

@@ -18,6 +18,9 @@ ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: Colors.white,
   primarySwatch: defaultColor,
   appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(
+      color: Colors.black,
+    ),
     backwardsCompatibility: false,
     systemOverlayStyle: SystemUiOverlayStyle(
       statusBarColor: Colors.white,

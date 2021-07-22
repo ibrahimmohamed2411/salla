@@ -4,6 +4,7 @@ import 'package:salla/models/categories_model.dart';
 import 'package:salla/models/change_favourites_model.dart';
 import 'package:salla/models/favourites_model.dart';
 import 'package:salla/models/home_model.dart';
+import 'package:salla/models/login_model.dart';
 import 'package:salla/network/remote/dio_helper.dart';
 import 'package:salla/network/remote/end_points.dart';
 import 'package:salla/screens/categories_screen.dart';
@@ -38,7 +39,8 @@ class ShopState extends ChangeNotifier {
         token: token,
       );
       await getCategories();
-      await getFavourites();
+      getFavourites();
+      await getUserData();
       homeModel = HomeModel.fromJson(response.data);
     } catch (error) {
       print(error);
@@ -57,9 +59,9 @@ class ShopState extends ChangeNotifier {
   }
 
   late ChangeFavouritesModel changeFavouritesModel;
-  late FavouritesModel favouritesModel;
 
-  Future<void> changeFavouriteState(dynamic product, int id) async {
+  Future<void> changeFavouriteState(dynamic product, int id,
+      {bool isSearch = false}) async {
     var response =
         await DioHelper.postData(token: token, url: FAVOURITES, data: {
       'product_id': id,
@@ -83,11 +85,39 @@ class ShopState extends ChangeNotifier {
     notifyListeners();
   }
 
+  late FavouritesModel favouritesModel;
   Future<FavouritesModel> getFavourites() async {
     var response = await DioHelper.getData(
       url: FAVOURITES,
       token: token,
     );
     return favouritesModel = FavouritesModel.fromJson(response.data);
+  }
+
+  late LoginModel loginModel;
+  Future<LoginModel> getUserData() async {
+    var response = await DioHelper.getData(
+      url: PROFILE,
+      token: token,
+    );
+    return loginModel = LoginModel.fromJson(response.data);
+  }
+
+////////////////////////////////////////////////////
+  Future<LoginModel> updateUserData({
+    required String name,
+    required String email,
+    required String phone,
+  }) async {
+    var response = await DioHelper.putData(
+      url: UPDATE_PROFILE,
+      token: token,
+      data: {
+        'name': name,
+        'email': email,
+        'phone': phone,
+      },
+    );
+    return loginModel = LoginModel.fromJson(response.data);
   }
 }

@@ -17,4 +17,24 @@ class ShopLoginState extends ChangeNotifier {
     });
     return status;
   }
+
+  LoginModel? registerModel;
+  Future<bool> userRegister({
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
+  }) async {
+    bool status = false;
+    await DioHelper.postData(url: REGISTER, data: {
+      'name': name,
+      'email': email,
+      'password': password,
+      'phone': phone,
+    }).then((value) {
+      registerModel = LoginModel.fromJson(value.data);
+      status = registerModel!.status!;
+    });
+    return status;
+  }
 }
