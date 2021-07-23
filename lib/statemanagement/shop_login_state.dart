@@ -37,4 +37,9 @@ class ShopLoginState extends ChangeNotifier {
     });
     return status;
   }
+
+  void clear() {
+    loginModel = null;
+    registerModel = null;
+  }
 }

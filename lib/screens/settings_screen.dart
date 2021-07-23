@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider/provider.dart';
 import 'package:salla/constants.dart';
+import 'package:salla/statemanagement/shop_login_state.dart';
 import 'package:salla/statemanagement/shop_state.dart';
 import 'package:salla/widgets/default_form_field.dart';
 import 'package:salla/widgets/default_text_button.dart';
@@ -73,10 +74,11 @@ class SettingsScreen extends StatelessWidget {
               text: 'Logout',
               onPressed: () {
                 signOut(context);
-                Phoenix.rebirth(context);
+                provider.clearStates();
+                Provider.of<ShopLoginState>(context, listen: false).clear();
               },
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             DefaultTextButton(

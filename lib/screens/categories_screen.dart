@@ -9,13 +9,13 @@ class CategoriesScreen extends StatelessWidget {
     return Consumer<ShopState>(
       builder: (ctx, Data, child) => ListView.separated(
         itemBuilder: (ctx, index) => BuildCategoryItem(
-          Data.categoriesModel.data.data[index],
+          Data.categoriesModel!.data.data[index],
         ),
         separatorBuilder: (ctx, index) => Divider(
           height: 15,
           color: Colors.grey,
         ),
-        itemCount: Data.categoriesModel.data.data.length,
+        itemCount: Data.categoriesModel!.data.data.length,
       ),
     );
   }

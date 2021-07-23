@@ -95,7 +95,7 @@ class BuildGridProduct extends StatelessWidget {
                             elevation: 10.0,
                             padding: const EdgeInsets.all(8.0),
                             content: Text(
-                              provider.changeFavouritesModel.message,
+                              provider.changeFavouritesModel!.message,
                               style: const TextStyle(
                                 color: Colors.blue,
                               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 import 'package:salla/models/categories_model.dart';
 import 'package:salla/models/change_favourites_model.dart';
 import 'package:salla/models/favourites_model.dart';
@@ -48,8 +49,8 @@ class ShopState extends ChangeNotifier {
     return homeModel;
   }
 
-  late CategoriesModel categoriesModel;
-  Future<CategoriesModel> getCategories() async {
+  CategoriesModel? categoriesModel;
+  Future<CategoriesModel?> getCategories() async {
     var response = await DioHelper.getData(
       url: GET_CATEGORIES,
       token: token,
@@ -58,7 +59,7 @@ class ShopState extends ChangeNotifier {
     return categoriesModel = CategoriesModel.fromJson(response.data);
   }
 
-  late ChangeFavouritesModel changeFavouritesModel;
+  ChangeFavouritesModel? changeFavouritesModel;
 
   Future<void> changeFavouriteState(dynamic product, int id,
       {bool isSearch = false}) async {
@@ -85,8 +86,8 @@ class ShopState extends ChangeNotifier {
     notifyListeners();
   }
 
-  late FavouritesModel favouritesModel;
-  Future<FavouritesModel> getFavourites() async {
+  FavouritesModel? favouritesModel;
+  Future<FavouritesModel?> getFavourites() async {
     var response = await DioHelper.getData(
       url: FAVOURITES,
       token: token,
@@ -119,5 +120,12 @@ class ShopState extends ChangeNotifier {
       },
     );
     return loginModel = LoginModel.fromJson(response.data);
+  }
+
+  void clearStates() {
+    currentIndex = 0;
+    homeModel = null;
+    categoriesModel = null;
+    favouritesModel = null;
   }
 }

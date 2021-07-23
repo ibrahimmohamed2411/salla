@@ -9,12 +9,12 @@ class FavouritesScreen extends StatelessWidget {
     return Consumer<ShopState>(
       builder: (ctx, Data, chile) => ListView.separated(
         itemBuilder: (ctx, index) =>
-            BuildFavouriteItem(Data.favouritesModel.data.data[index].product),
+            BuildFavouriteItem(Data.favouritesModel!.data.data[index].product),
         separatorBuilder: (ctx, index) => Divider(
           height: 15,
           color: Colors.grey,
         ),
-        itemCount: Data.favouritesModel.data.data.length,
+        itemCount: Data.favouritesModel!.data.data.length,
       ),
     );
   }

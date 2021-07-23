@@ -20,7 +20,7 @@ class ProductsScreen extends StatelessWidget {
         }
         if (snapShot.hasData) {
           return ProductsBuilder(
-            categoriesModel: provider.categoriesModel,
+            categoriesModel: provider.categoriesModel!,
             model: snapShot.data as HomeModel,
           );
         }
